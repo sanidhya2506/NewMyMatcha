@@ -23,7 +23,7 @@
 
 ## The Story Behind NewMyMatcha ✨  
 
-This project started as an idea in **the midst of a busy semester**. I remember losing **Engineers’ Day** to work on it, juggling lectures, assignments, and a microprocessor lab. My **Civils professor Dr Karanjeet Kaur**, who usually doesn’t deal with coding, noticed my effort and called it a “gem” — and that motivated me to push harder.  
+This project started as an idea in **the midst of a busy semester**. I remember losing **Engineers’ Day** to work on it, juggling lectures, assignments, and a microprocessor lab. My **Civils professor Dr. Karanjeet Kaur**, who usually doesn’t deal with coding, noticed my effort and called it a “gem” — and that motivated me to push harder.  
 
 My goal was simple but important: **to create a platform that represents underrepresented communities in BL dramas**. Many dramas either ignore minority stories or fail to make them discoverable. I wanted **NewMyMatcha** to shine a light on these gems, giving visibility to **LGBTQIA+ characters, POC, and minority themes** while maintaining a robust, technical recommendation system.  
 
