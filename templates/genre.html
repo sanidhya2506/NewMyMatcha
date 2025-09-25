@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyMatcha — Genre Recommendations</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+    --bg-start: #FFF0F6;
+    --bg-end: #FFFFFF;
+    --card: #FFFFFF;
+    --accent: #FF5B84;
+    --text: #4A3C47;
+    --glass: rgba(255,255,255,0.6);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+    margin:0;
+    font-family:"Poppins",system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background: linear-gradient(160deg, var(--bg-start), var(--bg-end));
+    color: var(--text);
+}
+
+/* NAVBAR */
+nav{
+    position:fixed; left:0;right:0;top:0;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 5%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,240,246,0.9));
+    backdrop-filter: blur(8px);
+    box-shadow:0 6px 18px rgba(255,91,132,0.08);
+    z-index:1000;
+    border-bottom-left-radius:10px; border-bottom-right-radius:10px;
+}
+.logo{ font-family:"Dancing Script", cursive; font-size:28px; color: var(--accent);}
+.navlinks{ display:flex; gap:18px; align-items:center; font-weight:600; color: var(--text);}
+.navlinks a{ color: var(--text); text-decoration:none; padding:6px 10px; border-radius:8px; transition:all .18s }
+.navlinks a:hover{ background:var(--glass); transform:translateY(-3px); color: var(--accent);}
+
+/* HERO */
+.hero-bg {
+    background-image: url('https://i.pinimg.com/1200x/0d/e3/6d/0de36df43bdc376eb2faebe59c05fcad.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    min-height: 80vh;
+    width: 100%;
+    border-radius: 18px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 5%;
+    position: relative;
+}
+.hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.35);
+    border-radius: 18px;
+    z-index: 0;
+}
+.hero-bg .hero-content { position: relative; z-index: 1; max-width: 800px; text-align: center; }
+.hero-bg h2 { font-size: clamp(28px, 4vw, 48px); margin-bottom: 20px; color: var(--accent); }
+.hero-bg p { font-size: 1rem; line-height: 1.6; margin-bottom: 30px; color: var(--text); }
+
+/* GENRE CHIPS */
+.genres {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+    text-align: center;
+}
+.chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 6px 18px rgba(255,91,132,0.08);
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform .14s, box-shadow .14s, background .18s;
+}
+.chip.active {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(255,91,132,0.2);
+}
+
+/* RESULTS GRID */
+#genreResults{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-top: 26px;
+    justify-items: center;
+}
+
+/* CARD STYLE */
+.card-result{
+    background: var(--card);
+    padding:12px; border-radius:12px;
+    box-shadow:0 10px 30px rgba(255,91,132,0.12);
+    overflow:hidden; text-decoration:none; color: var(--text);
+    transition: transform .2s, box-shadow .2s; text-align:center;
+    max-width: 220px;
+}
+.card-result:hover{ transform:translateY(-8px); box-shadow:0 24px 50px rgba(255,91,132,0.25) }
+.card-result img{ width:100%; height:260px; object-fit:cover; border-radius:8px; display:block }
+.card-info{ padding:10px 8px; text-align:center }
+.card-info h4{ margin:0; font-size:1.05rem; font-weight:700; color: var(--text); letter-spacing:0.2px }
+.card-info p{ margin:4px 0; font-size:0.9rem; color: var(--text); }
+
+footer{ padding:28px 6%; text-align:center; font-size:0.95rem; color: var(--text); }
+
+/* Heading pink */
+#genres h3 {
+    color: var(--accent);
+}
+
+/* Footer Styles */
+footer {
+  background: linear-gradient(160deg, #fff0f6, #ffffff);
+  padding: 40px 6% 20px;
+  text-align: center;
+  border-top: 1px solid rgba(255,91,132,0.2);
+  margin-top: 40px;
+}
+
+.footer-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  font-family: "Dancing Script", cursive;
+  font-size: 28px;
+  color: #FF5B84;
+  margin: 0;
+}
+
+.footer-tagline {
+  font-size: 0.95rem;
+  color: #4A3C47;
+  margin: 6px 0 20px;
+}
+
+.footer-links {
+  margin-bottom: 18px;
+}
+.footer-links a {
+  margin: 0 10px;
+  color: #4A3C47;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: #FF5B84;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.footer-socials a img {
+  width: 22px;
+  height: 22px;
+  filter: invert(30%) sepia(20%) saturate(600%) hue-rotate(300deg) brightness(90%) contrast(90%);
+  transition: transform 0.2s, filter 0.2s;
+}
+.footer-socials a:hover img {
+  transform: translateY(-3px) scale(1.1);
+  filter: invert(46%) sepia(80%) saturate(500%) hue-rotate(300deg) brightness(100%) contrast(95%);
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+  color: #4A3C47;
+  opacity: 0.7;
+  margin-top: 10px;
+}
+
+.footer-made {
+  font-size: 0.9rem;
+  color: #FF5B84;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.footer-made i {
+  color: #ff5b84;
+  margin: 0 4px;
+  animation: heartbeat 1.2s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+/* RESULTS GRID */
+#genreResults{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, max-content));
+    gap: 18px;
+    margin-top: 26px;
+    justify-content: center; /* center the grid when fewer items */
+}
+/* RESULTS GRID */
+#genreResults {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-top: 26px;
+    justify-items: center; /* centers cards when fewer items */
+}
+/* Hide hamburger on desktop */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--accent);
+}
+
+/* Mobile responsive nav */
+@media (max-width:768px){
+    .navlinks {
+        position: absolute;
+        top: 60px;
+        right: 5%;
+        background: rgba(255,255,255,0.95);
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 28px rgba(255,91,132,0.15);
+        display: none; /* hide by default */
+    }
+    .navlinks.active {
+        display: flex;
+    }
+    .hamburger {
+        display: block;
+    }
+}
+
+
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">MyMatcha 🍵</div>
+    <div class="navlinks">
+        <a href="{{ url_for('home') }}">Recommend</a>
+        <a href="{{ url_for('genre') }}">Genres</a>
+        <a href="{{ url_for('dramas') }}">Dramas</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+        <i class="fa fa-bars"></i>
+    </div>
+</nav>
+
+
+
+<section class="hero-bg">
+  <div class="hero-content">
+    <h2>Discover Dramas by Genre</h2>
+    <p>Romance, Comedy, Fantasy & more — pick your mood and explore cozy BL dramas!</p>
+  </div>
+</section>
+
+<section id="genres">
+    <h3 style="text-align:center;">Choose a Genre</h3>
+    <div class="genres" id="genreChips"></div>
+    <div id="genreResults"></div>
+</section>
+
+<!-- Footer Section -->
+<footer>
+    <div class="footer-container">
+        <h2 class="footer-logo">MyMatcha 🍵</h2>
+        <p class="footer-tagline">Your cozy BL drama recommender ✨</p>
+
+        <div class="footer-links">
+           <a href="{{ url_for('home') }}">Recommend</a>
+        <a href="{{ url_for('genre') }}">Genres</a>
+        <a href="{{ url_for('dramas') }}">Dramas</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        </div>
+
+        <div class="footer-socials">
+            <a href="https://www.instagram.com/sanidhya.does?igsh=MTZ4czlxM254bHlnNw==">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram">
+            </a>
+            <a href="https://www.linkedin.com/in/sanidhya-sharma-22ba91237/">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn">
+            </a>
+            <a href="https://github.com/sanidhya2506">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub">
+            </a>
+        </div>
+
+        <p class="footer-copy">&copy; 2025 MyMatcha. All rights reserved.</p>
+        <p class="footer-made">
+            Made with <i class="fa fa-heart"></i> by Sanidhya Sharma
+        </p>
+    </div>
+</footer>
+
+
+<script>
+const dramas = {
+  "korean": [
+    { "title": "Semantic Error", "year": 2022, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/1200x/ec/62/69/ec6269384a8aad38f1686c71cf904bb1.jpg" },
+    { "title": "To My Star", "year": 2021, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/54/88/94/548894756eb279d7b20be1b94e3b4a25.jpg" },
+    { "title": "Where Your Eyes Linger", "year": 2020, "genre": ["Romance", "Workplace"], "image": "https://i.pinimg.com/736x/a3/82/3b/a3823b0234a4cea9e572fe649e309e92.jpg" },
+    { "title": "Color Rush", "year": 2021, "genre": ["Romance", "Fantasy"], "image": "https://i.pinimg.com/1200x/dc/64/65/dc646578280f829b21e1deb6a0ebc63e.jpg" },
+    { "title": "You Make Me Dance", "year": 2023, "genre": ["Romance", "Music"], "image": "https://i.pinimg.com/1200x/29/63/1d/29631dbb91d50492bd4d3080ab1f343c.jpg" },
+    { "title": "Secret Relationships", "year": 2025, "genre": ["Romance", "Workplace"], "image": "https://i.pinimg.com/736x/f0/b1/95/f0b195fdf263c79a1ff062e09322219a.jpg" },
+    { "title": "When It Rains, It Pours", "year": 2025, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/1200x/e4/8d/61/e48d61ecf3784d372705c95962b291a3.jpg" },
+    { "title": "Ball Boy Tactics", "year": 2025, "genre": ["Romance", "Sports"], "image": "https://i.pinimg.com/736x/9d/97/90/9d9790feac353e4c666b728096a4f6ce.jpg" },
+    { "title": "HeeSu in Class 2", "year": 2025, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/736x/c6/59/ff/c659ff19fcc9388c1ee1f7554a0081bb.jpg" },
+    { "title": "Close to You", "year": 2025, "genre": ["Romance", "Slice-of-life"], "image": "https://i.pinimg.com/1200x/0b/44/42/0b44425044e76167f5a04eee47743db9.jpg" },
+    { "title": "Something Is Not Right", "year": 2025, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/0a/aa/a9/0aaaa91bd329377f0a29d57353576ab9.jpg" },
+    { "title": "Business as Usual", "year": 2025, "genre": ["Romance", "Workplace"], "image": "https://i.pinimg.com/736x/25/ac/d9/25acd94504ec956c386c57f158e8dcef.jpg" },
+    { "title": "Jun & Jun ", "year": 2025, "genre": ["Romance", "Fantasy"], "image": "https://i.pinimg.com/1200x/54/b2/78/54b278309203459155eb7a105356dc09.jpg" }
+  ],
+
+  "thai": [
+    { "title": "2gether: The Series", "year": 2020, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/736x/1c/ec/a1/1ceca1dee87986700cfd6761af2b7e73.jpg" },
+    { "title": "TharnType: The Series", "year": 2019, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/67/14/32/671432df85353543f18b1fe25d1f44ce.jpg" },
+    { "title": "Love By Chance", "year": 2018, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/736x/4e/2f/3b/4e2f3b9abbd808b2e5f0788d20b94cc8.jpg" },
+    { "title": "Until We Meet Again", "year": 2019, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/1200x/e8/a3/08/e8a308dabeaa66b0f8415b2986e385dd.jpg" },
+    { "title": "Bad Buddy", "year": 2021, "genre": ["Romance", "Comedy"], "image": "https://i.pinimg.com/736x/4c/91/e1/4c91e12287c44ca5d507113832ddde13.jpg" },
+    { "title": "Lovely Writer", "year": 2021, "genre": ["Romance", "Workplace"], "image": "https://i.pinimg.com/736x/c1/f7/46/c1f746e90fc463f4bf1ebfe1a0c0bae0.jpg" },
+    { "title": "My Golden Blood", "year": 2025, "genre": ["Romance", "Fantasy"], "image": "https://i.pinimg.com/736x/b7/17/53/b71753fb9ab5719b98c52db83cbbb734.jpg" },
+    { "title": "Season of Love in Shimane", "year": 2025, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/f5/5e/cc/f55ecce3d29199fa7f2e91a2f1f74115.jpg" },
+    { "title": "Top Form", "year": 2025, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/1f/32/6e/1f326e90e198ccba6f120b900637887d.jpg" },
+    { "title": "My Sweetheart Jom", "year": 2025, "genre": ["Romance", "Slice-of-life"], "image": "https://i.pinimg.com/736x/cd/15/28/cd15282b7b7615ee708a0caf6d27d1d1.jpg" },
+    { "title": "Burnout", "year": 2025, "genre": ["Romance", "Music"], "image": "https://i.pinimg.com/736x/b6/ee/ef/b6eeef2789f96a9f975ce52667ff6918.jpg" },
+    { "title": "Unforgotten Night", "year": 2025, "genre": ["Action", "Crime"], "image": "https://i.pinimg.com/736x/6f/21/42/6f2142f6e71adcc64c2e40d5b89f0882.jpg" },
+    { "title": "Love in the Air", "year": 2022, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/1200x/50/6b/84/506b84d3ffd11ef87f10b999e4364afc.jpg" },
+    { "title": "Never let me Go", "year": 2025, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/b3/82/6e/b3826e8f88df9e048b731c0390092886.jpg" },
+    { "title": "Monster Next Door", "year": 2025, "genre": ["Romance", "Slice-of-life"], "image": "https://i.pinimg.com/736x/4b/db/69/4bdb69351bc2022fd60ac6a61db71bb9.jpg" },
+    { "title": "KinnPorsche", "year": 2025, "genre": ["Romance", "Crime"], "image": "https://i.pinimg.com/736x/b1/27/f3/b127f3d7f85be9b135afbad018617bb3.jpg" }
+  ],
+
+  "japanese": [
+    { "title": "Cherry Magic! Thirty Years of Virginity Can Make You a Wizard?!", "year": 2020, "genre": ["Romance", "Comedy"], "image": "https://i.pinimg.com/736x/a3/8e/3f/a38e3f3f8788c52efeac4acd006cda7e.jpg" },
+    { "title": "Candy Color Paradox", "year": 2018, "genre": ["Romance", "Workplace"], "image": "https://i.pinimg.com/736x/65/3b/f0/653bf09db1c6fcf9432fd5b9df2534be.jpg" },
+    { "title": "Given (Live-action)", "year": 2021, "genre": ["Romance", "Music"], "image": "https://i.pinimg.com/1200x/d7/52/d8/d752d881abdc30f008f8f40b74936fcc.jpg" },
+    { "title": "Senpai, This Cannot Be Love", "year": 2020, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/736x/03/5f/3b/035f3b889e3c37964abdac8a761efc52.jpg" },
+    { "title": "At 25:00 in Akasaka", "year": 2024, "genre": ["Romance", "Mature"], "image": "https://i.pinimg.com/736x/7a/76/e6/7a76e6f3cff3885cc066a2e9aa61a482.jpg" },
+    { "title": "Happy of the End", "year": 2024, "genre": ["Crime", "Drama"], "image": "https://i.pinimg.com/736x/10/ca/83/10ca83909ea73d294b691030b2c8df46.jpg" },
+    { "title": "I Hear the Sunspot", "year": 2024, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/1200x/08/87/af/0887af1e393eb09bfaf85e5e58aaa555.jpg" },
+    { "title": "Love is a Poison", "year": 2024, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/ba/b2/65/bab2655916d958758c15126f6519c1dc.jpg" },
+    { "title": "I can't reach You", "year": 2023, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/1200x/31/de/0f/31de0fba4b98fa94e1aa8e7cb804c337.jpg" },
+    { "title": "Jack o' Frost", "year": 2023, "genre": ["Romance", "Mature"], "image": "https://i.pinimg.com/736x/e6/94/55/e694555c52105d6a158e92caf16dbc30.jpg" },
+    { "title": "Minato's Laundromat 2", "year": 2023, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/1200x/81/5e/45/815e45cfad3c2fb803a5bd94abf71edf.jpg" },
+    { "title": "My Beautiful Man 2", "year": 2023, "genre": ["Romance", "Mature"], "image": "https://i.pinimg.com/1200x/60/32/c2/6032c25ffe4bff0dd9d2e77b6263b26b.jpg" }
+  ],
+
+  "taiwanese": [
+    { "title": "HIStory2: Crossing the Line", "year": 2019, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/1200x/4c/3a/f2/4c3af20f919d4c732ba214238a475b8d.jpg" },
+    { "title": "HIStory3: Trapped", "year": 2021, "genre": ["Romance", "Drama"], "image":"https://i.pinimg.com/736x/ef/af/2a/efaf2a7681be0268d889bd045e7c9bdb.jpg" },
+    { "title": "Red Balloon", "year": 2022, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/736x/90/63/27/90632713c25ff5153d9ab8518aa664a8.jpg" },
+    { "title": "No.1 For You", "year": 2020, "genre": ["Romance", "Campus"], "image": "https://i.pinimg.com/736x/ac/33/69/ac33697f3f2ce31573b40a99e91781d5.jpg" },
+    { "title": "First Note of Love", "year": 2024, "genre": ["Romance", "Slice-of-life"], "image": "http://i.pinimg.com/736x/a4/6b/d8/a46bd8302db906d8bca844214e510e15.jpg" },
+    { "title": "See Your Love", "year": 2024, "genre": ["Romance", "Comedy"], "image":"https://i.pinimg.com/1200x/31/57/45/3157455e78b154b2604e9cc0392d2dab.jpg" },
+    { "title": "Stay by My Side", "year": 2023, "genre": ["Romance", "Mature"], "image": "https://i.pinimg.com/736x/cc/f3/cc/ccf3ccfac1cd1540bf52974d96b1d069.jpg" },
+    { "title": "VIP Only ", "year": 2023, "genre": ["Romance", "Slice-of-life"], "image": "https://i.pinimg.com/736x/b8/70/66/b870662298b62c94da5a85aa319d184e.jpg" },
+    { "title": "49 Days with a Merman", "year": 2023, "genre": ["Romance", "Comedy"], "image": "https://i.pinimg.com/736x/46/56/c8/4656c8bc3636d192a0ce28f6ee31c764.jpg" },
+    { "title": "Puls and Minus", "year": 2023, "genre": ["Romance", "Workplace"], "image":"https://i.pinimg.com/1200x/20/4a/91/204a916fa65626412caae707039b47a5.jpg" }
+  ],
+ "others": [
+  { "title": "CLASS", "year": 2019, "genre": ["Romance", "Comedy"], "image": "https://i.pinimg.com/736x/b0/3f/04/b03f0459b71cddeabaf327c6cc5e90a7.jpg" },
+  { "title": "Amar Prem Ki Prem Kahani", "year": 2020, "genre": ["Romance", "Comedy"], "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTBLPu-hIIQJkgYpkY1K4dELTMi0CUzDWFtNCtkVvZ39RFa72Y" },
+  { "title": "Red White and Royal Bule", "year": 2020, "genre": ["Romance", "Slice-of-life"], "image": "https://i.pinimg.com/736x/bb/9d/56/bb9d56c5291aa83c961301fea2e6a7f5.jpg" },
+  { "title": "Love, Simon", "year": 2019, "genre": ["Romance", "Comedy"], "image": "https://i.pinimg.com/736x/ac/01/5b/ac015bad65b082e0139e0d9ea2350ecb.jpg" },
+  { "title": "Heartstopper", "year": 2020, "genre": ["Romance", "Comedy"], "image": "https://i.pinimg.com/736x/d7/6e/6a/d76e6a306abeefd6263d64b20ecc53f3.jpg" },
+  { "title": "Young Royals", "year": 2020, "genre": ["Romance", "Slice-of-life"], "image": "https://i.pinimg.com/736x/08/51/d3/0851d337eefb8f874a76615c51b29bf6.jpg" },
+  { "title": "Love, Victor", "year": 2019, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/1200x/68/31/bc/6831bce5ba850d1079261e5d4835cbf3.jpg" },
+  { "title": "Fellow Travelers", "year": 2023, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/14/ee/f3/14eef3f4848f8bdb6b347ed386822d53.jpg" },
+  { "title": "Call me by Your Name", "year": 2017, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/1200x/eb/fb/1b/ebfb1b7e87c440520cbd865f1acd2e70.jpg" },
+  { "title": "FireBird", "year": 2019, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/eb/6b/7a/eb6b7a9364a0daf99bda1a3f09289636.jpg" },
+  { "title": "My Policeman", "year": 2022, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/c9/7a/35/c97a358f73c7a3761dbeee98143b681b.jpg" },
+  { "title": "Fair Heaven", "year": 2016, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/cf/48/e9/cf48e9e44f3cf0be9565b74fe67bf6c3.jpg" },
+  { "title": "Romil and Jugal", "year": 2015, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/a8/8a/6f/a88a6fb931702aba535518194916f066.jpg" },
+  { "title": "His Storyy", "year": 2021, "genre": ["Romance", "Drama"], "image": "https://upload.wikimedia.org/wikipedia/en/f/fe/His_Story_%28web_series%29.jpg" },
+  { "title": "My Brother... Nikhil", "year": 2005, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/c5/f3/eb/c5f3eb90f2e66d56162a28df48340e74.jpg" },
+  { "title": "Kuntergrau", "year": 2022, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/4c/dd/99/4cdd99af38c65806c2cd185a7f1a4a2e.jpg" },
+  { "title": "Skam France", "year": 2016, "genre": ["Romance", "Drama"], "image": "https://i.pinimg.com/736x/13/60/64/13606444ae3b8a17b1bbc5abfdb327bf.jpg" }
+]
+
+
+};
+
+
+
+function getGenres() {
+  let genreSet = new Set();
+  Object.values(dramas).flat().forEach(d => d.genre.forEach(g => genreSet.add(g)));
+  return [...genreSet];
+}
+
+function renderGenreChips() {
+  const container = document.getElementById("genreChips");
+  const genres = getGenres();
+  
+  genres.forEach((g, index) => {
+    const chip = document.createElement("div");
+    chip.className = "chip";
+    chip.textContent = g;
+    chip.addEventListener("click", () => filterByGenre(g, chip));
+    container.appendChild(chip);
+    
+    // Pre-select the first chip
+    if(index === 0){
+      chip.classList.add("active");
+      filterByGenre(g, chip);
+    }
+  });
+}
+
+function filterByGenre(genre, chip) {
+  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+  chip.classList.add("active");
+
+  const resultsContainer = document.getElementById("genreResults");
+  resultsContainer.innerHTML = "";
+
+  Object.keys(dramas).forEach(country => {
+    dramas[country].forEach(drama => {
+      if (drama.genre.includes(genre)) {
+        const card = document.createElement("a");
+        card.className = "card-result";
+        card.href = "#";
+        card.innerHTML = `
+          <img src="${drama.image}" alt="${drama.title}">
+          <div class="card-info">
+            <h4>${drama.title}</h4>
+          </div>
+        `;
+        resultsContainer.appendChild(card);
+      }
+    });
+  });
+}
+
+// Initialize genre chips and pre-select first genre
+renderGenreChips();
+// Optional: animate heart dynamically
+document.addEventListener("DOMContentLoaded", () => {
+    const heart = document.querySelector(".footer-made i");
+    if (heart) {
+        setInterval(() => {
+            heart.style.transform = "scale(1.3)";
+            setTimeout(() => { heart.style.transform = "scale(1)"; }, 600);
+        }, 1200);
+    }
+});
+
+
+const hamburger = document.getElementById('hamburger');
+const navlinks = document.querySelector('.navlinks');
+
+hamburger.addEventListener('click', () => {
+    navlinks.classList.toggle('active');
+});
+</script>
+
+</body>
+</html>
