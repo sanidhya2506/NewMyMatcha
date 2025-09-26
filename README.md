@@ -1,5 +1,10 @@
 # NewMyMatcha 🎬💖  
 
+![GitHub Repo stars](https://img.shields.io/github/stars/sanidhya2506/NewMyMatcha?style=social)  
+![License](https://img.shields.io/github/license/sanidhya2506/NewMyMatcha)  
+![Python](https://img.shields.io/badge/python-3.10+-blue.svg)  
+![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)  
+
 **Live Demo:** [https://newmymatcha.onrender.com/](https://newmymatcha.onrender.com/)  
 
 > “A BL drama recommendation platform built with love, dedication, and a mission to celebrate **every story that deserves to be seen**.”  
@@ -26,6 +31,15 @@
 This project started as an idea in **the midst of a busy semester**. I remember losing **Engineers’ Day** to work on it, juggling lectures, assignments, and a microprocessor lab. My **Civils professor Dr. Karanjeet Kaur**, who usually doesn’t deal with coding, noticed my effort and called it a “gem” — and that motivated me to push harder.  
 
 My goal was simple but important: **to create a platform that represents underrepresented communities in BL dramas**. Many dramas either ignore minority stories or fail to make them discoverable. I wanted **NewMyMatcha** to shine a light on these gems, giving visibility to **LGBTQIA+ characters, POC, and minority themes** while maintaining a robust, technical recommendation system.  
+
+---
+
+## Acknowledgements 🙏  
+
+- Special thanks to **Dr. Karanjeet Kaur** for motivating me during this project.  
+- Inspiration from BL communities worldwide who deserve better representation.  
+- Libraries & tools: Flask, Scikit-learn, NLTK, Pandas, Render.  
+  
 
 ---
 
@@ -88,19 +102,18 @@ My goal was simple but important: **to create a platform that represents underre
    cd NewMyMatcha
 
 ## File Structure 📂
-
 NewMyMatcha/
 │
-├─ app.py               # Main Flask app
-├─ recommender.py       # Recommendation logic
-├─ requirements.txt     # Dependencies
-├─ Procfile             # For Render deployment
-├─ templates/           # HTML pages
-│   ├─ index.html
-│   ├─ genre.html
-│   ├─ dramas.html
-│   └─ contact.html
-
+├── app.py              # Main Flask app
+├── recommender.py      # Recommendation logic
+├── requirements.txt    # Dependencies
+├── Procfile            # For Render deployment
+│
+├── templates/          # HTML pages
+│   ├── index.html
+│   ├── genre.html
+│   ├── dramas.html
+│   └── contact.html
 
 ---
 
